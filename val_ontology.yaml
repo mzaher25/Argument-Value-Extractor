@@ -7,16 +7,77 @@ measures:
   - Due process
   - Non-discrimination
   - Proportionality
-  - Equal oppurtunity 
   - Accommodations 
-  - Preservation of autonomy 
 
 id: V2
 name: Autonomy 
 definition: self-directing freedom and especially moral independence
-  - Equal treatment
-  - Due process
-  - Non-discrimination
-  - Proportionality
-  - Equal oppurtunity 
-  - Accommodations 
+measures: 
+  - Protected rights 
+  - Freedom from regulation 
+  - Privacy 
+  - Personal choice 
+
+id: V3
+name: Quality of Life  
+definition: the degree to which a person or group is healthy, comfortable, and able to enjoy the activities of daily living
+measures: 
+  - Health and wellbeing 
+  - Comfort and pain reduction 
+  - Convenience and burden reduction  
+  - Fullfillment and overall happiness
+
+id: V4
+name: Safety 
+definition: the condition of being safe from undergoing or causing hurt, injury, or loss
+measures: 
+  - Exposure and hazard reduction  
+  - Public security 
+  - Crime reduction  
+  - Risk mitigation 
+
+id: V5
+name: Life  
+definition: the quality that distinguishes a vital and functional being from a dead body
+measures: 
+  - Number of lives  
+  - Death counts and mortality rate 
+  - Birth counts 
+  - Longevity and prevented deaths 
+
+id: V6
+name: Honesty 
+definition: adherence to the facts
+measures: 
+  - Factual accuracy  
+  - Trustworthiness
+  - Legitimacy of claims 
+
+id: V7
+name: Innovation 
+definition: the introduction of something new
+measures: 
+  - Research and development 
+  - New technological products  
+  - Improved productivity 
+  - Future benefits 
+
+id: V8
+name: Responsibility 
+definition: moral, legal, or mental accountability
+measures: 
+  - Rule of law
+  - Contractual obligation 
+  - Trustworthiness 
+
+id: V9
+name: Sustainability 
+definition: of, relating to, or being a method of harvesting or using a resource so that the resource is not depleted or permanently damaged
+measures: 
+  - Resource conservation
+  - Environmental protection
+  - Environmental restoration
+  - Renewable energy adoption 
+
+
+
