@@ -1,0 +1,22 @@
+values:
+id: V1
+name: Fairness
+definition: the quality or state of being fair, fair or impartial treatment, lack of favoritism toward one side or another
+measures:
+  - Equal treatment
+  - Due process
+  - Non-discrimination
+  - Proportionality
+  - Equal oppurtunity 
+  - Accommodations 
+  - Preservation of autonomy 
+
+id: V2
+name: Autonomy 
+definition: self-directing freedom and especially moral independence
+  - Equal treatment
+  - Due process
+  - Non-discrimination
+  - Proportionality
+  - Equal oppurtunity 
+  - Accommodations 
