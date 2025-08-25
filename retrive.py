@@ -24,7 +24,7 @@ def retrieve(argument, path = "val_ontology.yaml", top_k = 3):
   return similarity.argsort()[::-1][:top_k]
 
 if name == "main":
-  argument = "WOW!"
+  argument = "death is bad!"
   retrieve(argument)
                     
           
