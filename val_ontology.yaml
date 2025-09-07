@@ -1,83 +1,185 @@
 values:
--id: V1
-  name: Fairness
-  definition: the quality or state of being fair, fair or impartial treatment, lack of favoritism toward one side or another
-  measures:
-    - Equal treatment
-    - Due process
-    - Non-discrimination
-    - Proportionality
-    - Accommodations 
+  - id: V1
+    name: Fairness
+    definition: the quality or state of being fair, fair or impartial treatment, lack of favoritism toward one side or another
+    measures:
+      - Equal treatment
+      - Due process
+      - Non-discrimination
+      - Unbiasedness 
+      - Proportionality
+      - Accommodations 
+      - Equality 
+      - Even distribution 
+    keywords:
+      - Equal
+      - Fair
+      - Even 
+      - Just 
+      - Equitable 
+      - Impartial 
+      - Unbiased 
 
--id: V2
-  name: Autonomy 
-  definition: self-directing freedom and especially moral independence
-  measures: 
-    - Protected rights 
-    - Freedom from regulation 
-    - Privacy 
-    - Personal choice 
+  - id: V2
+    name: Autonomy 
+    definition: self-directing freedom and especially moral independence
+    measures: 
+      - Protected rights 
+      - Freedom from regulation 
+      - Privacy 
+      - Personal choice 
+      - Self expression 
+    keywords:
+      - Personal 
+      - Individual 
+      - Private 
+      - Free
+      - Choice 
 
--id: V3
-  name: Quality of Life  
-  definition: the degree to which a person or group is healthy, comfortable, and able to enjoy the activities of daily living
-  measures: 
-    - Health and wellbeing 
-    - Comfort and pain reduction 
-    - Convenience and burden reduction  
-    - Fullfillment and overall happiness
+  - id: V3
+    name: Quality of Life  
+    definition: the degree to which a person or group is healthy, comfortable, and able to enjoy the activities of daily living
+    measures: 
+      - Health and wellbeing 
+      - Comfort and pain reduction 
+      - Convenience and burden reduction  
+      - Fullfillment and overall happiness
+    keywords:
+      - Happy
+      - Healthy 
+      - Satisfaction 
+      - Community 
+      - Relief
+      - Ease of Living 
 
--id: V4
-  name: Safety 
-  definition: the condition of being safe from undergoing or causing hurt, injury, or loss
-  measures: 
-    - Exposure and hazard reduction  
-    - Public security 
-    - Crime reduction  
-    - Risk mitigation 
+  - id: V4
+    name: Safety 
+    definition: the condition of being safe from undergoing or causing hurt, injury, or loss
+    measures: 
+      - Exposure and hazard reduction  
+      - Public security 
+      - Crime reduction  
+      - Risk mitigation 
+    keywords:
+      - Protection
+      - Law enforcement 
+      - Incarceration
+      - Secure
+      - Threat
+      - Injury
+      - Violence 
 
--id: V5
-  name: Life  
-  definition: the quality that distinguishes a vital and functional being from a dead body
-  measures: 
-    - Number of lives  
-    - Death counts and mortality rate 
-    - Birth counts 
-    - Longevity and prevented deaths 
+  - id: V5
+    name: Life  
+    definition: the quality that distinguishes a vital and functional being from a dead body
+    measures: 
+      - Number of lives  
+      - Death counts and mortality rate 
+      - Birth counts 
+      - Longevity and prevented deaths 
+    keywords:
+      - Birth
+      - Death
+      - Survival 
+      - Human needs
+      - Fatality
+      - Unborn 
+      - Life expectancy
+      - Longevity
 
--id: V6
-  name: Honesty 
-  definition: adherence to the facts
-  measures: 
-    - Factual accuracy  
-    - Trustworthiness
-    - Legitimacy of claims 
+  - id: V6
+    name: Honesty 
+    definition: adherence to the facts
+    measures: 
+      - Factual accuracy  
+      - Trustworthiness
+      - Legitimacy of claims 
+    keywords:
+      - Truth 
+      - Integrity 
+      - Fact
+      - Nonfiction 
+      - Reliable
+      - Credible 
+      - Transparent 
+      - Authentic
+      - Trustworthy
 
--id: V7
-  name: Innovation 
-  definition: the introduction of something new
-  measures: 
-    - Research and development 
-    - New technological products  
-    - Improved productivity 
-    - Future benefits 
+  - id: V7
+    name: Innovation 
+    definition: the introduction of something new
+    measures: 
+      - Research and development 
+      - Improved solutions 
+      - New technological products  
+      - Improved productivity 
+      - Future benefits 
+    keywords:
+      - Technology
+      - Discovery
+      - Research
+      - Development 
+      - Progress
+      - Advancment
+      - Discovery
+      - Pioneering 
 
--id: V8
-  name: Responsibility 
-  definition: moral, legal, or mental accountability
-  measures: 
-    - Rule of law
-    - Contractual obligation 
-    - Trustworthiness 
+  - id: V8
+    name: Responsibility 
+    definition: moral, legal, or mental accountability
+    measures: 
+      - Rule of law
+      - Contractual obligation 
+      - Trustworthiness 
+      - Following through 
+      - Caring for others 
+      - Providing for others 
+      - Sticking to principles 
+      - Showing discipline 
+    keywords:
+      - Accountability
+      - Duty
+      - Obligation
+      - Compliance
+      - Dependability 
 
--id: V9
-  name: Sustainability 
-  definition: of, relating to, or being a method of harvesting or using a resource so that the resource is not depleted or permanently damaged
-  measures: 
-    - Resource conservation
-    - Environmental protection
-    - Environmental restoration
-    - Renewable energy adoption 
+  - id: V9
+    name: Sustainability 
+    definition: of, relating to, or being a method of harvesting or using a resource so that the resource is not depleted or permanently damaged
+    measures: 
+      - Resource conservation
+      - Environmental protection
+      - Environmental restoration
+      - Renewable energy adoption 
+    keywords:
+      - Conservation 
+      - Renewable 
+      - Energy efficient 
+      - Environment
+      - Ecology
+      - Pollution
+      - Green 
+      - Atmoshpere 
 
-
-
+  - id: V10
+    name: Economic Growth and Preservation 
+    definition:  an increase in the capacity of an economy to produce goods and services
+    measures: 
+      - Increased job opportunities 
+      - Increased capital
+      - GDP and productivity growth
+      - Wage growth and earnings
+      - Economic stability 
+      - Deter from economic downturn 
+ 
+    keywords:
+      - Wealth 
+      - Economically feasible 
+      - Economics 
+      - Inflation 
+      - Productivity
+      - Labor
+      - Purchasing power
+      - Consumer
+      - Production 
+       
