@@ -31,7 +31,7 @@ with st.sidebar:
     st.header("Models & Auth")
     bert_path = st.text_input("BERT path/repo", "mzq34/bert-values-classifier")
     temperature = st.slider("GPT temperature", 0.0, 1.5, 0.0, 0.05)
-    max_output_tokens = st.slider("GPT max tokens", 8, 128, 32, 4)
+    max_output_tokens = 128
 
     # Status badges
     st.caption(f"🔑 OpenAI key: {'✅ found' if bool(OPENAI_API_KEY) else '❌ missing'}")
@@ -126,7 +126,7 @@ with col1:
             st.stop()
         elif sent.strip():
             b_label, b_conf, _ = predict_bert([sent])
-            g_label = batch_gpt([sent], OPENAI_MODEL, temperature, max_output_tokens)[0]
+            g_label = batch_gpt([sent], OPENAI_MODEL, temperature, 128)[0]
             st.markdown(f"**BERT** → `{b_label[0]}` (conf {b_conf[0]:.2f})")
             st.markdown(f"**GPT**  → `{g_label}`")
             st.markdown(f"**Agreement:** {'Yes!' if b_label[0]==g_label else 'No :('}")
