@@ -31,7 +31,7 @@ with st.sidebar:
 
     # OpenAI setup
     default_model = os.getenv("OPENAI_MODEL", "gpt-4o")  # you can put the exact name you have access to
-    openai_model = st.text(f"OpenAI model: {default_model}")
+    openai_model =default_model
     openai_api_key = OPENAI_API_KEY
     temperature = st.slider("GPT temperature", 0.0, 1.5, 0.0, 0.05)
     max_output_tokens = st.slider("GPT max tokens", 8, 128, 32, 4)
@@ -84,7 +84,7 @@ def gpt_label(sentence: str, model: str, api_key: str, temperature: float, max_t
 
     user_prompt = f"Sentence: {sentence}\n"
 
-    # Fallback: Chat Completions
+    # Chat Completions
     chat = openai.chat.completions.create(
     model = "chatgpt-4o-latest",
     messages= [{"role": "user", "content":openAI_prompt.prompt_gpt(sentence)}]
@@ -111,8 +111,9 @@ col1, col2 = st.columns(2)
 with col1:
     sent = st.text_area("Sentence", height=120, placeholder="e.g., We should redistribute the wealth.")
     if st.button("Compare"):
-        if not openai_api_key:
-            st.error("Please provide OPENAI_API_KEY in the sidebar.")
+        if not OPENAI_API_KEY:
+            st.error("No OpenAI API key found in secrets. Add OPENAI_API_KEY in Streamlit -> Settings -> Secrets.")
+            st.stop()
         elif sent.strip():
             b_label, b_conf, _ = predict_bert([sent])
             g_label = batch_gpt([sent], openai_model, openai_api_key, temperature, max_output_tokens)[0]
