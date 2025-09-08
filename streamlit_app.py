@@ -116,7 +116,7 @@ def gpt_label(sentence: str, *, model: str, api_key: str, temperature: float, ma
         st.warning(f"OpenAI call failed: {e}")
         return "Honesty"
 
-def batch_gpt(texts: List[str], *, model: str, api_key: str, temperature: float, max_tokens: int) -> List[str]:
+def batch_gpt(texts, model, api_key, temperature, max_tokens) -> List[str]:
     return [gpt_label(t, model=model, api_key=api_key, temperature=temperature, max_tokens=max_tokens) for t in texts]
 
 
