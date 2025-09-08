@@ -17,6 +17,7 @@ VALUES = [
 ]
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MAX_LEN = 128
+OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY") 
 
 st.set_page_config(page_title="BERT vs GPT Comparator", layout="wide")
 st.title("Compare GPT-4o vs Fine-tuned BERT (Values Classification)")
@@ -31,7 +32,7 @@ with st.sidebar:
     # OpenAI setup
     default_model = os.getenv("OPENAI_MODEL", "gpt-4o")  # you can put the exact name you have access to
     openai_model = st.text(f"OpenAI model: {default_model}")
-    openai_api_key = st.text_input("OPENAI_API_KEY", type="password", value=os.getenv("OPENAI_API_KEY",""))
+    openai_api_key = OPENAI_API_KEY
     temperature = st.slider("GPT temperature", 0.0, 1.5, 0.0, 0.05)
     max_output_tokens = st.slider("GPT max tokens", 8, 128, 32, 4)
 
