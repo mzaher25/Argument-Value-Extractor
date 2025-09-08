@@ -17,28 +17,29 @@ VALUES = [
 ]
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MAX_LEN = 128
-OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY") 
+
+# Read secrets/env only (no text input for keys)
+OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
+HF_TOKEN = st.secrets.get("HUGGINGFACE_HUB_TOKEN") or os.getenv("HUGGINGFACE_HUB_TOKEN")
+OPENAI_MODEL = st.secrets.get("OPENAI_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))  # or "gpt-4o"
 
 st.set_page_config(page_title="BERT vs GPT Comparator", layout="wide")
-st.title("Compare GPT-4o vs Fine-tuned BERT (Values Classification)")
+st.title("Compare GPT vs Fine-tuned BERT (Values Classification)")
 
 with st.sidebar:
     st.header("Models & Auth")
-    bert_path = st.text_input(
-        "BERT path/repo", "mzq34/bert-values-classifier"
-    )
-    hf_token = st.text_input("HF token (if needed)", type="password", value=os.getenv("HUGGINGFACE_HUB_TOKEN",""))
-
-    # OpenAI setup
-    default_model = os.getenv("OPENAI_MODEL", "gpt-4o")  # you can put the exact name you have access to
-    openai_model =default_model
-    openai_api_key = OPENAI_API_KEY
+    bert_path = st.text_input("BERT path/repo", "mzq34/bert-values-classifier")
     temperature = st.slider("GPT temperature", 0.0, 1.5, 0.0, 0.05)
     max_output_tokens = st.slider("GPT max tokens", 8, 128, 32, 4)
 
+    # Status badges
+    st.caption(f"🔑 OpenAI key: {'✅ found' if bool(OPENAI_API_KEY) else '❌ missing'}")
+    st.caption(f"🤗 HF token: {'✅ found' if bool(HF_TOKEN) else '⚠️ optional/blank'}")
+    st.caption(f"🧠 OpenAI model: `{OPENAI_MODEL}`")
+
 # ---------- LOAD BERT ----------
 @st.cache_resource(show_spinner=True)
-def load_bert(path_or_repo: str, token: str):
+def load_bert(path_or_repo: str, token: str | None):
     kw = {}
     if token:
         kw["token"] = token
@@ -51,7 +52,7 @@ def load_bert(path_or_repo: str, token: str):
     label2id = {v: k for k, v in id2label.items()}
     return tok, model, id2label, label2id
 
-bert_tok, bert_model, id2label, label2id = load_bert(bert_path, hf_token)
+bert_tok, bert_model, id2label, label2id = load_bert(bert_path, HF_TOKEN or "")
 
 def predict_bert(texts: List[str]):
     enc = bert_tok(texts, padding=True, truncation=True, max_length=MAX_LEN, return_tensors="pt").to(DEVICE)
@@ -63,14 +64,19 @@ def predict_bert(texts: List[str]):
     confs = [float(probs[i, pred_ids[i]]) for i in range(len(texts))]
     return labels, confs, probs
 
-# ---------- GPT CALL (Responses API first, fallback to ChatCompletions) ----------
-
+# ---------- GPT CALL ----------
 def normalize_label(text: str) -> str:
     t = text.strip()
+    # exact or prefix match
     for v in VALUES:
-        if t.lower().startswith(v.lower()) or v.lower() in t.lower():
+        if t.lower() == v.lower() or t.lower().startswith(v.lower()):
             return v
-    # fallback heuristic
+    # contains match
+    tl = t.lower()
+    for v in VALUES:
+        if v.lower() in tl:
+            return v
+    # last resort: simple word scan
     words = re.findall(r"[A-Za-z][A-Za-z ]+", t)
     for w in words:
         w = w.strip()
@@ -78,31 +84,41 @@ def normalize_label(text: str) -> str:
             return w
     return "Honesty"
 
-def gpt_label(sentence: str, model: str, api_key: str, temperature: float, max_tokens: int) -> str:
-    import openai
-    openai.api_key = api_key
+def gpt_label(sentence: str, *, model: str, api_key: str, temperature: float, max_tokens: int) -> str:
+    if not api_key:
+        raise RuntimeError("Missing OPENAI_API_KEY")
+    # OpenAI SDK v1.x
+    from openai import OpenAI
+    client = OpenAI(api_key=api_key)
 
-    user_prompt = f"Sentence: {sentence}\n"
+    system_prompt = (
+        "You are a strict classifier. Return exactly one label from this list:\n"
+        "Fairness; Autonomy; Quality of Life; Safety; Life; Honesty; "
+        "Innovation; Responsibility; Sustainability; Economic Growth and Preservation.\n"
+        "Output ONLY the label text—no punctuation or explanation."
+    )
+    user_prompt = f"Sentence: {sentence}\nLabel:"
 
-    # Chat Completions
-    chat = openai.chat.completions.create(
-    model = "chatgpt-4o-latest",
-    messages= [{"role": "user", "content":openAI_prompt.prompt_gpt(sentence)}]
-)
+    try:
+        resp = client.chat.completions.create(
+            model=model,  # e.g., "gpt-4o-mini"
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            temperature=temperature,
+            max_tokens=max_tokens,
+        )
+        text = (resp.choices[0].message.content or "").strip()
+        return normalize_label(text)
+    except Exception as e:
+        # surface the error in UI so you know what's wrong
+        st.warning(f"OpenAI call failed: {e}")
+        return "Honesty"
 
-    text = chat.choices[0].message.content or ""
+def batch_gpt(texts: List[str], *, model: str, api_key: str, temperature: float, max_tokens: int) -> List[str]:
+    return [gpt_label(t, model=model, api_key=api_key, temperature=temperature, max_tokens=max_tokens) for t in texts]
 
-    return normalize_label(text)
-
-def batch_gpt(texts: List[str], model: str, api_key: str, temperature: float, max_tokens: int) -> List[str]:
-    out = []
-    for t in texts:
-        try:
-            out.append(gpt_label(t, model, api_key, temperature, max_tokens))
-        except Exception:
-            out.append("Honesty")
-            time.sleep(0.02)
-    return out
 
 # ---------- UI: Single sentence ----------
 st.subheader("Single sentence")
