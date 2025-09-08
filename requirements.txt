@@ -1,15 +1,20 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
 
-streamlit>=1.36
-torch==2.3.1
-transformers>=4.41.0
-accelerate>=0.33.0
-safetensors>=0.4.3
-tokenizers>=0.15.2
+# core
+streamlit==1.37.1
+torch==2.8.0+cpu
+transformers==4.44.2
+accelerate==0.34.2
+safetensors==0.4.5
+# Let transformers pull the matching tokenizers version automatically
 
-pandas>=2.2.2
-numpy>=1.26.4
-scikit-learn>=1.4.2
+# data & metrics
+pandas==2.2.3
+numpy==1.26.4
+scikit-learn==1.5.2
 
-huggingface_hub>=0.23.0
-python-dotenv>=1.0.1
+# hubs / api
+huggingface_hub==0.24.6
+openai==1.45.0
+python-dotenv==1.0.1
+
