@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import torch
-import openAI_prompt
+from openai import OpenAI
 import retrieval
 from sklearn.metrics import f1_score, accuracy_score, classification_report
 from typing import List
@@ -22,6 +22,7 @@ MAX_LEN = 128
 OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
 HF_TOKEN = st.secrets.get("HUGGINGFACE_HUB_TOKEN") or os.getenv("HUGGINGFACE_HUB_TOKEN")
 OPENAI_MODEL = st.secrets.get("OPENAI_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))  # or "gpt-4o"
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 st.set_page_config(page_title="BERT vs GPT Comparator", layout="wide")
 st.title("Compare GPT vs Fine-tuned BERT (Values Classification)")
@@ -84,13 +85,7 @@ def normalize_label(text: str) -> str:
             return w
     return "Honesty"
 
-def gpt_label(sentence: str, *, model: str, api_key: str, temperature: float, max_tokens: int) -> str:
-    if not api_key:
-        raise RuntimeError("Missing OPENAI_API_KEY")
-    # OpenAI SDK v1.x
-    from openai import OpenAI
-    client = OpenAI(api_key=api_key)
-
+def gpt_label(sentence: str, *, model: str, temperature: float, max_tokens: int) -> str:
     system_prompt = (
         "You are a strict classifier. Return exactly one label from this list:\n"
         "Fairness; Autonomy; Quality of Life; Safety; Life; Honesty; "
@@ -101,7 +96,7 @@ def gpt_label(sentence: str, *, model: str, api_key: str, temperature: float, ma
 
     try:
         resp = client.chat.completions.create(
-            model=model,  # e.g., "gpt-4o-mini"
+            model=model,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
@@ -112,7 +107,6 @@ def gpt_label(sentence: str, *, model: str, api_key: str, temperature: float, ma
         text = (resp.choices[0].message.content or "").strip()
         return normalize_label(text)
     except Exception as e:
-        # surface the error in UI so you know what's wrong
         st.warning(f"OpenAI call failed: {e}")
         return "Honesty"
 
