@@ -1,0 +1,18 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+# Core
+streamlit==1.37.1
+torch==2.3.1
+transformers==4.43.3
+tokenizers==0.19.1
+safetensors==0.4.3
+accelerate==0.33.0
+
+# Metrics & data
+scikit-learn==1.5.1
+pandas==2.2.2
+numpy==1.26.4
+
+# Model hubs / APIs
+huggingface_hub==0.24.5
+openai==1.43.0
