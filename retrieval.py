@@ -21,11 +21,11 @@ def enc_query(text):
 def value_text(v):
     parts = [f"{v['name']}. {v['definition']}"]
     if v.get("measures"):  parts.append("Measures: " + ", ".join(v["measures"]))
-    if v.get("keywords"):  parts.append("Keywords: " + ", ".join(v["keywords"]))
+    if v.get("keywords"):  parts.append("Keywords: " + ", ".join(v["keywords"]))s
     return " ".join(parts)
 
 def run_retrival(argument):
-    with open( "Argument-Value-Extractor/val_ontology.yaml", "r") as f:
+    with open( "val_ontology.yaml", "r") as f:
       ontology = yaml.safe_load(f)
     
     values = ontology["values"] 
