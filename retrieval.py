@@ -21,7 +21,7 @@ def enc_query(text):
 def value_text(v):
     parts = [f"{v['name']}. {v['definition']}"]
     if v.get("measures"):  parts.append("Measures: " + ", ".join(v["measures"]))
-    if v.get("keywords"):  parts.append("Keywords: " + ", ".join(v["keywords"]))s
+    if v.get("keywords"):  parts.append("Keywords: " + ", ".join(v["keywords"]))
     return " ".join(parts)
 
 def run_retrival(argument):
