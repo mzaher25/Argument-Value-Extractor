@@ -110,8 +110,8 @@ def gpt_label(sentence: str, *, model: str, temperature: float, max_tokens: int)
         st.warning(f"OpenAI call failed: {e}")
         return "Honesty"
 
-def batch_gpt(texts, model, api_key, temperature, max_tokens) -> List[str]:
-    return [gpt_label(t, model=model, api_key=api_key, temperature=temperature, max_tokens=max_tokens) for t in texts]
+def batch_gpt(texts, model, temperature, max_tokens) -> List[str]:
+    return [gpt_label(t, model=model, temperature=temperature, max_tokens=max_tokens) for t in texts]
 
 
 # ---------- UI: Single sentence ----------
@@ -126,7 +126,7 @@ with col1:
             st.stop()
         elif sent.strip():
             b_label, b_conf, _ = predict_bert([sent])
-            g_label = batch_gpt([sent], OPENAI_MODEL, OPENAI_API_KEY, temperature, 128)[0]
+            g_label = batch_gpt([sent], OPENAI_MODEL, temperature, 128)[0]
             st.markdown(f"**BERT** → `{b_label[0]}` (conf {b_conf[0]:.2f})")
             st.markdown(f"**GPT**  → `{g_label}`")
             st.markdown(f"**Agreement:** {'Yes!' if b_label[0]==g_label else 'No :('}")
