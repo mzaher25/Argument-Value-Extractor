@@ -126,7 +126,7 @@ with col1:
             st.stop()
         elif sent.strip():
             b_label, b_conf, _ = predict_bert([sent])
-            g_label = batch_gpt([sent], OPENAI_MODEL, temperature, 128)[0]
+            g_label = batch_gpt([sent], OPENAI_MODEL, OPENAI_API_KEY, temperature, 128)[0]
             st.markdown(f"**BERT** → `{b_label[0]}` (conf {b_conf[0]:.2f})")
             st.markdown(f"**GPT**  → `{g_label}`")
             st.markdown(f"**Agreement:** {'Yes!' if b_label[0]==g_label else 'No :('}")
