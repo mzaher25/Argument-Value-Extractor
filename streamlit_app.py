@@ -4,11 +4,11 @@ import pandas as pd
 import streamlit as st
 import torch
 from openai import OpenAI
-import retrieval
 from sklearn.metrics import f1_score, accuracy_score, classification_report
 from typing import List
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from huggingface_hub import HfApi
+import openAI_prompt
 
 # ---------- CONFIG ----------
 VALUES = [
@@ -86,13 +86,10 @@ def normalize_label(text: str) -> str:
     return "Honesty"
 
 def gpt_label(sentence: str, *, model: str, temperature: float, max_tokens: int) -> str:
-    system_prompt = (
-        "You are a strict classifier. Return exactly one label from this list:\n"
-        "Fairness; Autonomy; Quality of Life; Safety; Life; Honesty; "
-        "Innovation; Responsibility; Sustainability; Economic Growth and Preservation.\n"
-        "Output ONLY the label text—no punctuation or explanation."
-    )
+    
     user_prompt = f"Sentence: {sentence}\nLabel:"
+
+    system_prompt = openAI_prompt.prompt_gpt(user_prompt)
 
     try:
         resp = client.chat.completions.create(
