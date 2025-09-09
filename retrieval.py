@@ -1,7 +1,6 @@
 #This file loads in the ontology
 #It compares given sentences and generates a list of 3 top values
 import yaml, json 
-
 from sentence_transformers import SentenceTransformer
 import numpy as np
 
@@ -26,7 +25,7 @@ def value_text(v):
     return " ".join(parts)
 
 def run_retrival(argument):
-    with open( "/Users/maryzaher/val/val_ontology.yaml", "r") as f:
+    with open( "Argument-Value-Extractor/val_ontology.yaml", "r") as f:
       ontology = yaml.safe_load(f)
     
     values = ontology["values"] 
