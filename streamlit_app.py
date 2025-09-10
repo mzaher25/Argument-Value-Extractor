@@ -31,11 +31,12 @@ st.title("Fine-Tuned BERT vs GPT+RAG Comparator")
 
 with st.sidebar:
     st.header("Models & Auth")
-    bert_path = st.text_input("BERT path/repo", "mzq34/bert-values-classifier")
+    bert_path = "mzq34/bert-values-classifier"
     temperature = st.slider("GPT temperature", 0.0, 1.5, 0.0, 0.05)
     max_output_tokens = 128
 
     st.caption(f"OpenAI model: `{OPENAI_MODEL}`")
+    st.caption(f"BERT path: `{bert_path}`")
 
 # BERT
 @st.cache_resource(show_spinner=True)
@@ -113,7 +114,7 @@ def batch_gpt(texts, model, temperature, max_tokens) -> List[str]:
 
 # UI
 st.subheader("About:")
-st.markdown("Input an argumentative sentence to see which value each model outputs.  The BERT model is a fine-tuned base BERT (base-bert-uncased on HF), utilizing a dataset of 300 annotated sentences. For the GPT model, the input is first passed into a word embedding model, then using cosine similarity the top 3 values are filtered to ground the prediction. This is passed to GPT-4o along with the user sentence. For more info, like fine-tuning and model specifics, see the repo linked above!")
+st.markdown("Input an argumentative sentence to see which value each model outputs.  The BERT model is a fine-tuned base BERT, utilizing a created dataset of 300 annotated sentences. For the GPT model, the input is first passed into a word embedding model, then using cosine similarity the top 3 values are filtered to ground the prediction. This is passed to GPT-4o along with the user sentence. For more info, like fine-tuning and model specifics, see the repo linked above!")
 col1, col2 = st.columns(2)
 
 with col1:
