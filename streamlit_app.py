@@ -27,6 +27,7 @@ OPENAI_MODEL = st.secrets.get("OPENAI_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o"
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 st.set_page_config(page_title="Argument Value Extractor", layout="wide")
+st.title("Argument Value Extractor")
 st.title("Fine-Tuned BERT vs GPT+RAG Comparator")
 
 with st.sidebar:
