@@ -113,7 +113,7 @@ def batch_gpt(texts, model, temperature, max_tokens) -> List[str]:
 
 # UI
 st.subheader("About:")
-st.markdown("Input an argumentative sentence to see which value each model outputs. The BERT model is a fine-tuned base BERT ("base-bert-uncased" on HF), utilizing a dataset of 300 annotated sentences. For the GPT model, the input is first passed into a word embedding model, then using cosine similarity the top 3 values are filtered to ground the prediction. This is passed to GPT-4o along with the user sentence. For more info, like fine-tuning and model specifics, see the repo linked above!"
+st.markdown("Input an argumentative sentence to see which value each model outputs. The BERT model is a fine-tuned base BERT ("base-bert-uncased" on HF), utilizing a dataset of 300 annotated sentences. For the GPT model, the input is first passed into a word embedding model, then using cosine similarity the top 3 values are filtered to ground the prediction. This is passed to GPT-4o along with the user sentence. For more info, like fine-tuning and model specifics, see the repo linked above!", unsafe_allow_html=False, *, help=None, width="stretch")
 col1, col2 = st.columns(2)
 
 with col1:
