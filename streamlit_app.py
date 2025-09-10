@@ -1,3 +1,5 @@
+#File that builds the streamlit app, gets user input and passes it through both models
+
 import os, re, json, time
 import numpy as np
 import pandas as pd
@@ -10,7 +12,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from huggingface_hub import HfApi
 import openAI_prompt
 
-# ---------- CONFIG ----------
+
 VALUES = [
     "Fairness","Autonomy","Quality of Life","Safety","Life",
     "Honesty","Innovation","Responsibility","Sustainability","Economic Growth and Preservation"
@@ -18,14 +20,14 @@ VALUES = [
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MAX_LEN = 128
 
-# Read secrets/env only (no text input for keys)
+# Read secrets
 OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
-HF_TOKEN = st.secrets.get("HUGGINGFACE_HUB_TOKEN") or os.getenv("HUGGINGFACE_HUB_TOKEN")
-OPENAI_MODEL = st.secrets.get("OPENAI_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o-mini"))  # or "gpt-4o"
+OPENAI_MODEL = st.secrets.get("OPENAI_MODEL", os.getenv("OPENAI_MODEL", "gpt-4o"))  
+
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-st.set_page_config(page_title="BERT vs GPT Comparator", layout="wide")
-st.title("Compare GPT vs Fine-tuned BERT (Values Classification)")
+st.set_page_config(page_title="Argument Value Extractor", layout="wide")
+st.title("Fine-Tuned BERT vs GPT+RAG Comparator")
 
 with st.sidebar:
     st.header("Models & Auth")
@@ -33,12 +35,9 @@ with st.sidebar:
     temperature = st.slider("GPT temperature", 0.0, 1.5, 0.0, 0.05)
     max_output_tokens = 128
 
-    # Status badges
-    st.caption(f"🔑 OpenAI key: {'✅ found' if bool(OPENAI_API_KEY) else '❌ missing'}")
-    st.caption(f"🤗 HF token: {'✅ found' if bool(HF_TOKEN) else '⚠️ optional/blank'}")
-    st.caption(f"🧠 OpenAI model: `{OPENAI_MODEL}`")
+    st.caption(f"OpenAI model: `{OPENAI_MODEL}`")
 
-# ---------- LOAD BERT ----------
+# BERT
 @st.cache_resource(show_spinner=True)
 def load_bert(path_or_repo: str, token: str | None):
     kw = {}
@@ -65,7 +64,7 @@ def predict_bert(texts: List[str]):
     confs = [float(probs[i, pred_ids[i]]) for i in range(len(texts))]
     return labels, confs, probs
 
-# ---------- GPT CALL ----------
+# GPT call
 def normalize_label(text: str) -> str:
     t = text.strip()
     # exact or prefix match
@@ -89,6 +88,7 @@ def gpt_label(sentence: str, *, model: str, temperature: float, max_tokens: int)
     
     user_prompt = f"Sentence: {sentence}\nLabel:"
 
+    #builds prompt in openAI_prompt file
     system_prompt = openAI_prompt.prompt_gpt(user_prompt)
 
     try:
@@ -111,15 +111,16 @@ def batch_gpt(texts, model, temperature, max_tokens) -> List[str]:
     return [gpt_label(t, model=model, temperature=temperature, max_tokens=max_tokens) for t in texts]
 
 
-# ---------- UI: Single sentence ----------
-st.subheader("Single sentence")
+# UI
+st.subheader("About:")
+st.markdown("Input an argumentative sentence to see which value each model outputs. The BERT model is a fine-tuned base BERT ("base-bert-uncased" on HF), utilizing a dataset of 300 annotated sentences. For the GPT model, the input is first passed into a word embedding model, then using cosine similarity the top 3 values are filtered to ground the prediction. This is passed to GPT-4o along with the user sentence. For more info, like fine-tuning and model specifics, see the repo linked above!"
 col1, col2 = st.columns(2)
 
 with col1:
-    sent = st.text_area("Sentence", height=120, placeholder="e.g., We should redistribute the wealth.")
+    sent = st.text_area("Sentence", height=120, placeholder="e.g., We should prevent crime.")
     if st.button("Compare"):
         if not OPENAI_API_KEY:
-            st.error("No OpenAI API key found in secrets. Add OPENAI_API_KEY in Streamlit -> Settings -> Secrets.")
+            st.error("GPT CALL ERROR")
             st.stop()
         elif sent.strip():
             b_label, b_conf, _ = predict_bert([sent])
@@ -129,7 +130,7 @@ with col1:
             st.markdown(f"**Agreement:** {'Yes!' if b_label[0]==g_label else 'No :('}")
 
 with col2:
-    st.info("GPT is prompted to return exactly one of your 10 labels. Keep temperature at 0 for determinism.")
+    st.info("GPT is prompted to return one of 10 labels. Keep temperature at 0 for determinism.")
 
 
 
