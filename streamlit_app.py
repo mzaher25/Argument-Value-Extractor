@@ -52,7 +52,7 @@ def load_bert(path_or_repo: str, token: str | None):
     label2id = {v: k for k, v in id2label.items()}
     return tok, model, id2label, label2id
 
-bert_tok, bert_model, id2label, label2id = load_bert(bert_path, HF_TOKEN or "")
+bert_tok, bert_model, id2label, label2id = load_bert(bert_path, "")
 
 def predict_bert(texts: List[str]):
     enc = bert_tok(texts, padding=True, truncation=True, max_length=MAX_LEN, return_tensors="pt").to(DEVICE)
