@@ -114,7 +114,7 @@ def batch_gpt(texts, model, temperature, max_tokens) -> List[str]:
 
 # UI
 st.subheader("About:")
-st.markdown("Input an argumentative sentence to see which value each model outputs.  The BERT model is a fine-tuned base BERT, utilizing a created dataset of 300 annotated sentences. For the GPT model, I first created an ontology of values, which includes the definition and way they are measured, along with keywords. The input is first passed into a word embedding model, then using cosine similarity + the ontology the top 3 values are filtered to ground the prediction. This is passed to GPT-4o along with the user sentence. For more info, like fine-tuning, model specifics, and to see the ontology, check out the repo linked above!")
+st.markdown("Input an argumentative sentence to see which value each model outputs.  The BERT model is a fine-tuned base BERT, utilizing a created dataset of 300 annotated sentences. For the GPT model, I first created an ontology of values, which includes the definition and way they are measured, along with keywords. The input and ontology are first passed into a word embedding model, then using cosine similarity the top 3 values are filtered to ground the prediction. This is passed to GPT-4o along with the user sentence. For more info, like fine-tuning, model specifics, and to see the ontology, check out the repo linked above!")
 st.subheader("Values:")
 st.markdown("Each model classifies a sentence into one of the following: Fairness, Autonomy, Quality of Life, Safety, Life, Honesty, Innovation, Responsibility, Sustainability, Economic Growth and Preservation")
 st.subheader("Suggested Sentences:")
