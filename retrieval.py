@@ -1,5 +1,5 @@
 #This file loads in the ontology
-#It compares given sentences and generates a list of 3 top values
+#It compares given sentences and generates a list of 3 top values using cosine similarity
 import yaml, json 
 from sentence_transformers import SentenceTransformer
 import numpy as np
