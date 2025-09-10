@@ -113,7 +113,7 @@ def batch_gpt(texts, model, temperature, max_tokens) -> List[str]:
 
 # UI
 st.subheader("About:")
-st.markdown("Input an argumentative sentence to see which value each model outputs.", unsafe_allow_html=False, *, help=None, width="stretch")
+st.markdown("Input an argumentative sentence to see which value each model outputs.")
 col1, col2 = st.columns(2)
 
 with col1:
