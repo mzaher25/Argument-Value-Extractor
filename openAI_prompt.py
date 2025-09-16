@@ -1,3 +1,5 @@
+#This file builds the prompt using the retrieval.py file to get top 3 values.
+#Note that the postprocessing from the prompt happens in streamlit_app.py, where the output is verified 
 from openai import OpenAI
 import openai
 import torch 
